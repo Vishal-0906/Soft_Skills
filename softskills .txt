@@ -1,0 +1,75 @@
+Certainly! Here's the exact question from the image, rewritten word-for-word:
+
+
+---
+
+Module 1: Effective Communication
+Task: Write professional emails based on any 5 of the following scenarios. Ensure clarity, conciseness, and a formal tone.
+
+1. Thank you Email
+2. Letter of Apology
+3. Reminder Email
+4. Quotation Email
+5. Email of Inquiry for Requesting Information
+6. Email Asking for a Status Update
+7. Asking for a Raise in Salary
+8. Email to Your Boss About a Problem (Requesting Help)
+9. Resignation Email
+10. Introduction Email to Client
+ 
+ 
+ Ans.)
+ 
+ 
+1. Thank You Email
+
+Subject: Thank You for Your Support
+Dear Vishal Rajput,
+I sincerely thank you for your valuable support during the recent project. Your timely guidance and collaboration were instrumental in helping us achieve our goals. I truly appreciate your commitment and efforts. It was a pleasure working with you, and I look forward to future opportunities to collaborate.
+Warm regards,
+Vikram Desai
+
+
+---
+
+2. Letter of Apology
+
+Subject: Apology for Missing the Deadline
+Dear Vishal Rajput,
+I sincerely apologize for not meeting the deadline on the recent task assigned. Unforeseen circumstances caused a delay, and I take full responsibility. I assure you it won’t happen again, and I’m working diligently to complete it as soon as possible. I appreciate your understanding.
+Best regards,
+Neha Sinha
+
+
+---
+
+3. Reminder Email
+
+Subject: Gentle Reminder: Pending Response
+Dear Vishal Rajput,
+I hope you're doing well. I’m writing to remind you about the proposal I sent on July 10th. We’re approaching our deadline and your feedback is crucial to proceed. Kindly review it at your earliest convenience. Please let me know if you need any clarification.
+Thank you,
+Amit Bansal
+
+
+---
+
+4. Email Asking for a Status Update
+
+Subject: Request for Project Status Update
+Dear Vishal Rajput,
+I hope all is well. I would like to kindly request an update on the status of the content review task assigned on July 5th. This will help us plan the next steps accordingly. Please share any progress or issues encountered.
+Looking forward to your update.
+Regards,
+Sneha Rao
+
+
+---
+
+5. Introduction Email to Client
+
+Subject: Introduction – Manav Kapoor from Digitech Pvt. Ltd.
+Dear Vishal Rajput,
+I hope this message finds you well. I am Manav Kapoor, your point of contact from Digitech Pvt. Ltd. I look forward to working with you on the software development project. Please feel free to reach out for any support or queries.
+Warm regards,
+Manav Kapoor

@@ -1,0 +1,109 @@
+Session 9 – Authentication and Environment Variables
+
+Q1. Create a new Next.js app and set up authentication using NextAuth.js with Google as a provider. Ensure that after logging in, the user's name and email are displayed on the homepage.  
+A1.
+`javascript
+// pages/api/auth/[...nextauth].js
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+
+export default NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLECLIENTID,
+      clientSecret: process.env.GOOGLECLIENTSECRET
+    })
+  ]
+});
+
+// pages/index.js
+import { useSession } from "next-auth/react";
+
+export default function Home() {
+  const { data: session } = useSession();
+  return (
+    <div>
+      {session ? (
+        <>
+          <h1>Welcome {session.user.name}</h1>
+          <p>{session.user.email}</p>
+        </>
+      ) : (
+        <h1>Please log in</h1>
+      )}
+    </div>
+  );
+}
+`
+
+---
+
+Q2. Add a .env.local file to your Next.js project and store your Google Client ID and Client Secret as environment variables. Update your Next.js configuration to use these variables instead of hardcoding the values. Hint: Use process.env.GOOGLECLIENTID and process.env.GOOGLECLIENTSECRET in your configuration.  
+A2.
+`
+GOOGLECLIENTID=your-google-client-id
+GOOGLECLIENTSECRET=your-google-client-secret
+`
+
+---
+
+Q3. Protect the /api/secret route in your Next.js app so that only authenticated users can access it. If an unauthenticated user tries to access this route, return a 401 Unauthorized response.  
+A3.
+`javascript
+// pages/api/secret.js
+import { getSession } from "next-auth/react";
+
+export default async function handler(req, res) {
+  const session = await getSession({ req });
+  if (!session) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  res.json({ message: "This is a secret route!" });
+}
+`
+
+---
+
+Q4. Build a Profile page that only shows user details if the session is valid. If the user is not logged in, redirect them to the login page. Hint: Use the useSession hook from next-auth/react to check authentication status.  
+A4.
+`javascript
+// pages/profile.js
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
+export default function Profile() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (!session) {
+    router.push("/api/auth/signin");
+    return null;
+  }
+
+  return (
+    <div>
+      <h1>Profile</h1>
+      <p>Name: {session.user.name}</p>
+      <p>Email: {session.user.email}</p>
+    </div>
+  );
+}
+`
+
+---
+
+Q5. Use ChatGPT or GitHub Copilot to help you write a function that logs out the user and redirects them to the homepage. Paste the code you generated and note which AI tool you used.  
+A5.
+`javascript
+// components/LogoutButton.js
+import { signOut } from "next-auth/react";
+
+export default function LogoutButton() {
+  return (
+    <button onClick={() => signOut({ callbackUrl: "/" })}>
+      Logout
+    </button>
+  );
+}
+`

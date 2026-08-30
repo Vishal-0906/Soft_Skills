@@ -1,0 +1,73 @@
+Session 5 – GraphQL Schema & Playground Practice
+
+Q1. Define a GraphQL schema in schema.graphql for a simple Playlist app with two types: Playlist (id: ID!, name: String!, songs: [Song]) and Song (id: ID!, title: String!, artist: String!).  
+A1.
+`graphql
+type Playlist {
+  id: ID!
+  name: String!
+  songs: [Song]
+}
+
+type Song {
+  id: ID!
+  title: String!
+  artist: String!
+}
+`
+
+Q2. Write a custom query type in your schema that allows fetching a playlist by its id and returns all its songs, including each song's title and artist.  
+A2.
+`graphql
+type Query {
+  getPlaylist(id: ID!): Playlist
+}
+`
+
+Q3. Use Apollo Sandbox or GraphiQL to test a nested query that fetches a playlist by id and retrieves the playlist name along with the titles and artists of all songs in that playlist.  
+A3.
+`graphql
+query {
+  getPlaylist(id: "1") {
+    name
+    songs {
+      title
+      artist
+    }
+  }
+}
+`
+
+Q4. Add a new field to the Song type called duration (Int!) and update your schema and sample data to support it. Then, test a query in Apollo Sandbox or GraphiQL that fetches all songs with their title and duration. Hint: Remember to update both the schema and the resolver/data to include the new field.  
+A4.
+`graphql
+type Song {
+  id: ID!
+  title: String!
+  artist: String!
+  duration: Int!
+}
+`
+`graphql
+query {
+  songs {
+    title
+    duration
+  }
+}
+`
+
+Q5. Use the introspection feature in Apollo Sandbox or GraphiQL to explore your schema and list all available types and fields. Take a screenshot or write down the structure you discover.  
+A5.
+`graphql
+query {
+  schema {
+    types {
+      name
+      fields {
+        name
+      }
+    }
+  }
+}
+`

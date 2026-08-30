@@ -1,0 +1,84 @@
+Session 5 – GraphQL Schema & Playground Practice
+
+Q1. Define a GraphQL type called Product with fields id (ID!), name (String!), price (Float!), and inStock (Boolean!) in your schema.graphql file.  
+A1.
+`graphql
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+  inStock: Boolean!
+}
+`
+
+---
+
+Q2. Write a custom query called getProductByName(name: String!) that returns a Product by its name, and test it using Apollo Sandbox or GraphiQL.  
+A2.
+`graphql
+type Query {
+  getProductByName(name: String!): Product
+}
+`
+`graphql
+query {
+  getProductByName(name: "Laptop") {
+    id
+    name
+    price
+    inStock
+  }
+}
+`
+
+---
+
+Q3. Add a relationship in your schema: create a type Order with fields id (ID!), products ([Product!]), and total (Float!), then write a query getOrder(id: ID!) that returns an Order including its products.  
+A3.
+`graphql
+type Order {
+  id: ID!
+  products: [Product!]
+  total: Float!
+}
+
+extend type Query {
+  getOrder(id: ID!): Order
+}
+`
+`graphql
+query {
+  getOrder(id: "1") {
+    id
+    total
+    products {
+      name
+      price
+    }
+  }
+}
+`
+
+---
+
+Q4. Use Apollo Sandbox or GraphiQL introspection features to explore all available types and queries in your schema, then list 3 things you discovered that you didn’t explicitly define.  
+A4.  
+1. The schema introspection type.  
+2. The type introspection query.  
+3. Built-in scalar types like String, Int, Boolean.
+
+---
+
+Q5. Test a nested query in Apollo Sandbox or GraphiQL that fetches an Order by ID and retrieves each Product’s name and price inside that order. Hint: Use curly braces to specify nested fields in your query.  
+A5.
+`graphql
+query {
+  getOrder(id: "1") {
+    id
+    products {
+      name
+      price
+    }
+  }
+}
+`

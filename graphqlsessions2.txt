@@ -1,0 +1,114 @@
+Session 2 – GraphQL Setup in React
+1. Question:
+Install @apollo/client and graphql in a new React app using npm, then verify the installation by importing ApolloClient from @apollo/client in App.js and logging it to the console.
+Answer:
+Install the packages:
+npm install @apollo/client graphql
+App.js:
+import { ApolloClient } from "@apollo/client";
+
+console.log(ApolloClient);
+
+function App() {
+  return <h1>GraphQL App</h1>;
+}
+
+export default App;
+2. Question:
+Set up ApolloClient in your React project to connect to the public GraphQL endpoint https://countries.trevorblades.com/ and configure ApolloProvider to wrap your App component.
+Answer:
+import React from "react";
+import ReactDOM from "react-dom/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider
+} from "@apollo/client";
+
+import App from "./App";
+
+const client = new ApolloClient({
+  uri: "https://countries.trevorblades.com/",
+  cache: new InMemoryCache()
+});
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+);
+3. Question:
+Create and run a simple GraphQL query using Apollo Client's useQuery hook to fetch and display the names of all countries from the countries GraphQL API.
+Answer:
+import { gql, useQuery } from "@apollo/client";
+
+const GET_COUNTRIES = gql`
+  query {
+    countries {
+      name
+    }
+  }
+`;
+
+function App() {
+  const { loading, error, data } = useQuery(GET_COUNTRIES);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <ul>
+      {data.countries.map((country) => (
+        <li key={country.name}>{country.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default App;
+4. Question:
+Explain in your own words the role of ApolloProvider in a React app and how it uses React Context to provide GraphQL data to child components.
+Answer:
+ApolloProvider makes the Apollo Client available to all child components through React Context. Any child component can then use hooks such as useQuery and useMutation without manually passing the Apollo Client through props.
+Example:
+<ApolloProvider client={client}>
+  <App />
+</ApolloProvider>
+5. Question:
+Modify your previous code to display a loading message while the query is fetching data and an error message if the query fails.
+Answer:
+import { gql, useQuery } from "@apollo/client";
+
+const GET_COUNTRIES = gql`
+  query {
+    countries {
+      name
+    }
+  }
+`;
+
+function App() {
+  const { loading, error, data } = useQuery(GET_COUNTRIES);
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+    return <h2>Error: {error.message}</h2>;
+  }
+
+  return (
+    <div>
+      <h1>Countries</h1>
+
+      {data.countries.map((country) => (
+        <p key={country.name}>{country.name}</p>
+      ))}
+    </div>
+  );
+}
+
+export default App;

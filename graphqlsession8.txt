@@ -1,0 +1,108 @@
+Session 8 – Data Fetching in Next.js
+
+Q1. Create a Next.js page called trending-movies.js that fetches a list of trending movies from a mock API using getStaticProps and displays their titles and poster images when the page loads.  
+A1.
+`javascript
+// pages/trending-movies.js
+export async function getStaticProps() {
+  const movies = [
+    { title: "Movie A", poster: "/a.jpg" },
+    { title: "Movie B", poster: "/b.jpg" }
+  ];
+  return { props: { movies } };
+}
+
+export default function TrendingMovies({ movies }) {
+  return (
+    <div>
+      {movies.map((m, i) => (
+        <div key={i}>
+          <h2>{m.title}</h2>
+          <img src={m.poster} alt={m.title} />
+        </div>
+      ))}
+    </div>
+  );
+}
+`
+
+Q2. Build a Next.js page called my-orders.js that uses getServerSideProps to fetch and display a user's recent food orders (simulate Zomato/Swiggy) from a mock API every time the page is requested. Hint: Use a random order list or a free mock API like https://jsonplaceholder.typicode.com/posts (jsonplaceholder.typicode.com in Bing) as the data source.  
+A2.
+`javascript
+// pages/my-orders.js
+export async function getServerSideProps() {
+  const orders = [
+    { id: 1, item: "Pizza" },
+    { id: 2, item: "Burger" }
+  ];
+  return { props: { orders } };
+}
+
+export default function MyOrders({ orders }) {
+  return (
+    <div>
+      {orders.map(o => (
+        <p key={o.id}>{o.item}</p>
+      ))}
+    </div>
+  );
+}
+`
+
+Q3. Add a new page called [id].js inside a pages/products/ folder in your Next.js app. Use getStaticPaths to pre-generate paths for 5 fake Flipkart product IDs, and use getStaticProps to fetch and display product details for each. Constraint: Hardcode the product IDs and details in a local array for this exercise.  
+A3.
+`javascript
+// pages/products/[id].js
+const products = [
+  { id: '1', name: 'Phone' },
+  { id: '2', name: 'Laptop' },
+  { id: '3', name: 'Shoes' },
+  { id: '4', name: 'Watch' },
+  { id: '5', name: 'Bag' }
+];
+
+export async function getStaticPaths() {
+  return {
+    paths: products.map(p => ({ params: { id: p.id } })),
+    fallback: false
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const product = products.find(p => p.id === params.id);
+  return { props: { product } };
+}
+
+export default function Product({ product }) {
+  return <h1>{product.name}</h1>;
+}
+`
+
+Q4. Integrate a GraphQL query inside getStaticProps to fetch a list of 5 latest music albums (simulate Spotify) and display their names and artists on a Next.js page called latest-albums.js. Hint: Use a free GraphQL endpoint like https://countries.trevorblades.com/ for practice, or mock the query and data if needed.  
+A4.
+`javascript
+// pages/latest-albums.js
+export async function getStaticProps() {
+  const albums = [
+    { name: "Album A", artist: "Artist A" },
+    { name: "Album B", artist: "Artist B" }
+  ];
+  return { props: { albums } };
+}
+
+export default function LatestAlbums({ albums }) {
+  return (
+    <div>
+      {albums.map((a, i) => (
+        <p key={i}>{a.name} - {a.artist}</p>
+      ))}
+    </div>
+  );
+}
+`
+
+Q5. Draw a diagram (hand-drawn and scanned or digital) that compares SSR (getServerSideProps) vs SSG (getStaticProps) in Next.js. Show when data is fetched, how users get the page, and one example use case for each. Upload your diagram as an image and write 2–3 lines explaining the difference in your own words.  
+A5.  
+- SSR fetches data on each request, suitable for dynamic content like food orders.  
+- SSG fetches data at build time, suitable for static content like blog posts.  
+

@@ -1,0 +1,201 @@
+Session 3 – Writing Queries and Displaying Data
+1. Question:
+Use the useQuery hook from @apollo/client to fetch a list of restaurants (id, name, cuisine) from a GraphQL endpoint and display their names in a React component.
+Answer:
+import { gql, useQuery } from "@apollo/client";
+
+const GET_RESTAURANTS = gql`
+  query {
+    restaurants {
+      id
+      name
+      cuisine
+    }
+  }
+`;
+
+function RestaurantList() {
+  const { loading, error, data } = useQuery(GET_RESTAURANTS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div>
+      {data.restaurants.map((restaurant) => (
+        <p key={restaurant.id}>{restaurant.name}</p>
+      ))}
+    </div>
+  );
+}
+
+export default RestaurantList;
+2. Question:
+Build a Flipkart-style product list component that uses useQuery to fetch products (name, price, image) from a GraphQL API and renders each product's name and price in a card layout.
+Answer:
+import { gql, useQuery } from "@apollo/client";
+
+const GET_PRODUCTS = gql`
+  query {
+    products {
+      id
+      name
+      price
+      image
+    }
+  }
+`;
+
+function ProductList() {
+  const { loading, error, data } = useQuery(GET_PRODUCTS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div className="product-container">
+      {data.products.map((product) => (
+        <div className="product-card" key={product.id}>
+          <img src={product.image} alt={product.name} />
+          <h3>{product.name}</h3>
+          <p>₹{product.price}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default ProductList;
+3. Question:
+Add loading and error state handling to your product list: show a "Loading..." message while fetching, and display an error message if the query fails.
+Answer:
+import { gql, useQuery } from "@apollo/client";
+
+const GET_PRODUCTS = gql`
+  query {
+    products {
+      id
+      name
+      price
+      image
+    }
+  }
+`;
+
+function ProductList() {
+  const { loading, error, data } = useQuery(GET_PRODUCTS);
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+    return <h2>Error: {error.message}</h2>;
+  }
+
+  return (
+    <div>
+      {data.products.map((product) => (
+        <div key={product.id}>
+          <img src={product.image} alt={product.name} />
+          <h3>{product.name}</h3>
+          <p>₹{product.price}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default ProductList;
+4. Question:
+Refactor your restaurant list component to extract the rendering of a single restaurant into a separate RestaurantCard component and map over the data to display all restaurants using this new component.
+Answer:
+import { gql, useQuery } from "@apollo/client";
+
+const GET_RESTAURANTS = gql`
+  query {
+    restaurants {
+      id
+      name
+      cuisine
+    }
+  }
+`;
+
+function RestaurantCard({ restaurant }) {
+  return (
+    <div className="restaurant-card">
+      <h3>{restaurant.name}</h3>
+      <p>Cuisine: {restaurant.cuisine}</p>
+    </div>
+  );
+}
+
+function RestaurantList() {
+  const { loading, error, data } = useQuery(GET_RESTAURANTS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div>
+      {data.restaurants.map((restaurant) => (
+        <RestaurantCard
+          key={restaurant.id}
+          restaurant={restaurant}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default RestaurantList;
+5. Question:
+Debug the code: A Next.js page uses useQuery to fetch movie data but always shows "Loading..." even when the data is available. Find and fix the error in the following code snippet:
+const {
+  loading,
+  error,
+  data
+} = useQuery(GET_MOVIES);
+
+if (loading) return "Loading...";
+if (error) return "Error!";
+
+if (!data) return "No data.";
+
+return (
+  <ul>
+    {data.movies.map((movie) => (
+      <li>{movie.title}</li>
+    ))}
+  </ul>
+);
+Answer:
+The code should correctly check the query response and return valid JSX. Also, a key should be added to each mapped element.
+const {
+  loading,
+  error,
+  data
+} = useQuery(GET_MOVIES);
+
+if (loading) {
+  return <p>Loading...</p>;
+}
+
+if (error) {
+  return <p>Error: {error.message}</p>;
+}
+
+if (!data || !data.movies) {
+  return <p>No data.</p>;
+}
+
+return (
+  <ul>
+    {data.movies.map((movie) => (
+      <li key={movie.id}>
+        {movie.title}
+      </li>
+    ))}
+  </ul>
+);

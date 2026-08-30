@@ -1,0 +1,70 @@
+Session 1 – Introduction to GraphQL
+1. Question:
+Open the public GraphQL Pokémon API in the GraphiQL Playground (https://pokeapi.graphql.dev/) and run a query to fetch the name and image of any 3 Pokémon.
+Answer:
+query {
+  pokemons(first: 3) {
+    results {
+      name
+      image
+    }
+  }
+}
+2. Question:
+Write a GraphQL query that fetches the name, types, and maximum HP of a single Pokémon by its name (for example, pikachu) using the Pokémon GraphQL API.
+Answer:
+query {
+  pokemon(name: "pikachu") {
+    name
+    types {
+      type {
+        name
+      }
+    }
+    maxHP
+  }
+}
+3. Question:
+Compare GraphQL and REST by listing 3 ways GraphQL allows apps like Zomato or Flipkart to fetch only the data they need, compared to typical REST API responses.
+Answer:
+Fetch only required fields: GraphQL allows the client to request only the fields it needs, while REST often returns a predefined response.
+Single API request: GraphQL can fetch related data in one request, while REST may require multiple API calls.
+No over-fetching or under-fetching: GraphQL returns exactly the requested data, reducing unnecessary data transfer.
+4. Question:
+Given this GraphQL schema snippet:
+type Movie {
+  title: String
+  rating: Float
+  poster: String
+}
+
+type Query {
+  movie(title: String): Movie
+}
+Write a sample query to fetch the title and poster of a movie named Inception.
+Answer:
+query {
+  movie(title: "Inception") {
+    title
+    poster
+  }
+}
+5. Question:
+Use ChatGPT to generate a GraphQL mutation example for adding a new playlist to a music app (like Spotify). Paste the mutation query and explain what each part does in one line.
+Answer:
+mutation {
+  addPlaylist(
+    name: "My Favorite Songs"
+    description: "My personal playlist"
+  ) {
+    id
+    name
+    description
+  }
+}
+Explanation:
+mutation → Indicates that data will be modified.
+addPlaylist → Calls the mutation for creating a playlist.
+name → Specifies the playlist name.
+description → Specifies the playlist description.
+id, name, description → Specifies the fields to return after creating the playlist.

@@ -1,0 +1,165 @@
+Session 10 – Mini Project: “AI-Powered Blog Platform”
+
+Q1. Set up a new Next.js project named insta-news, enable SSR (Server-Side Rendering), and create two pages: /feed and /about, each displaying a simple heading.  
+A1.
+`bash
+npx create-next-app insta-news
+`
+`javascript
+// pages/feed.js
+export default function Feed() {
+  return <h1>Feed Page</h1>;
+}
+
+// pages/about.js
+export default function About() {
+  return <h1>About Page</h1>;
+}
+`
+
+---
+
+Q2. Design a GraphQL schema for a 'Post' entity with fields: id, title, content, author, and createdAt. Implement a GraphQL API endpoint in your Next.js app that returns a static list of 3 sample posts.  
+A2.
+`graphql
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  author: String!
+  createdAt: String!
+}
+
+type Query {
+  posts: [Post]
+}
+`
+`javascript
+// pages/api/graphql.js
+import { ApolloServer, gql } from "apollo-server-micro";
+
+const typeDefs = gql`
+  type Post {
+    id: ID!
+    title: String!
+    content: String!
+    author: String!
+    createdAt: String!
+  }
+  type Query {
+    posts: [Post]
+  }
+`;
+
+const posts = [
+  { id: "1", title: "First Post", content: "Hello World", author: "Alice", createdAt: "2026-08-30" },
+  { id: "2", title: "Second Post", content: "GraphQL Rocks", author: "Bob", createdAt: "2026-08-30" },
+  { id: "3", title: "Third Post", content: "Next.js + GraphQL", author: "Charlie", createdAt: "2026-08-30" }
+];
+
+const resolvers = {
+  Query: {
+    posts: () => posts
+  }
+};
+
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+export default apolloServer.createHandler({ path: "/api/graphql" });
+`
+
+---
+
+Q3. Integrate Firebase Authentication with your Next.js app so users can sign in using Google. After login, display the user's name and profile picture on the /feed page. Hint: Use the firebase/auth library and Next.js API routes for authentication handling.  
+A3.
+`javascript
+// pages/feed.js
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
+
+export default function Feed() {
+  const [user] = useAuthState(auth);
+  return (
+    <div>
+      {user ? (
+        <>
+          <h1>Welcome {user.displayName}</h1>
+          <img src={user.photoURL} alt="Profile" />
+        </>
+      ) : (
+        <h1>Please log in</h1>
+      )}
+    </div>
+  );
+}
+`
+
+---
+
+Q4. On the /feed page, fetch the list of posts from your GraphQL API and display each post's title and author. Add a button next to each post labeled 'Summarize with AI'.  
+A4.
+`javascript
+// pages/feed.js
+import { useQuery, gql } from "@apollo/client";
+
+const GET_POSTS = gql`
+  query {
+    posts {
+      id
+      title
+      author
+    }
+  }
+`;
+
+export default function Feed() {
+  const { data } = useQuery(GET_POSTS);
+  return (
+    <div>
+      {data?.posts.map(post => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>By {post.author}</p>
+          <button>Summarize with AI</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+`
+
+---
+
+Q5. Use the OpenAI API to generate a summary for a selected post when the 'Summarize with AI' button is clicked. Show the summary below the post content. Constraint: Limit the summary to 2–3 sentences and handle loading/error states in the UI.  
+A5.
+`javascript
+// components/SummarizeButton.js
+import { useState } from "react";
+
+export default function SummarizeButton({ post }) {
+  const [summary, setSummary] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSummarize() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/summarize", {
+        method: "POST",
+        body: JSON.stringify({ content: post.content })
+      });
+      const data = await res.json();
+      setSummary(data.summary);
+    } catch (err) {
+      setSummary("Error generating summary.");
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div>
+      <button onClick={handleSummarize}>Summarize with AI</button>
+      {loading && <p>Loading...</p>}
+      {summary && <p>{summary}</p>}
+    </div>
+  );
+}
+`

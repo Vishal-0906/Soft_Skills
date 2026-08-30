@@ -1,0 +1,85 @@
+Session 7 – Next.js Pages and Routing
+
+Q1. Create a Next.js project and inside the /pages directory, add three files: home.js, explore.js, and contact.js. Each page should display a unique heading so you can confirm file-based routing is working.  
+A1.
+`javascript
+// pages/home.js
+export default function Home() {
+  return <h1>Home Page</h1>;
+}
+
+// pages/explore.js
+export default function Explore() {
+  return <h1>Explore Page</h1>;
+}
+
+// pages/contact.js
+export default function Contact() {
+  return <h1>Contact Page</h1>;
+}
+`
+
+Q2. Add a new dynamic route to your Next.js app by creating a file named [playlistId].js inside the /pages/playlists folder. Display the playlistId from the URL on the page, simulating a Spotify playlist detail view. Hint: Use useRouter from 'next/router' to access the dynamic route parameter.  
+A2.
+`javascript
+// pages/playlists/[playlistId].js
+import { useRouter } from 'next/router';
+
+export default function Playlist() {
+  const router = useRouter();
+  const { playlistId } = router.query;
+  return <h1>Playlist ID: {playlistId}</h1>;
+}
+`
+
+Q3. Implement navigation links between your home.js, explore.js, and contact.js pages using the Link component from 'next/link'. Place the links in a simple navbar at the top of each page.  
+A3.
+`javascript
+// components/Navbar.js
+import Link from 'next/link';
+
+export default function Navbar() {
+  return (
+    <nav>
+      <Link href="/home">Home</Link> | 
+      <Link href="/explore">Explore</Link> | 
+      <Link href="/contact">Contact</Link>
+    </nav>
+  );
+}
+`
+
+Q4. Set up a static path generation for your [playlistId].js dynamic route so that only three playlist pages (IDs: 101, 202, 303) are pre-rendered at build time. Hint: Use getStaticPaths and getStaticProps to achieve this.  
+A4.
+`javascript
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { playlistId: '101' } },
+      { params: { playlistId: '202' } },
+      { params: { playlistId: '303' } }
+    ],
+    fallback: false
+  };
+}
+
+export async function getStaticProps({ params }) {
+  return {
+    props: {
+      playlistId: params.playlistId
+    }
+  };
+}
+`
+
+Q5. Use an AI tool like ChatGPT or GitHub Copilot to generate a code snippet for a Next.js dynamic route page that fetches and displays details for a Flipkart product based on productId. Paste the generated code into your project and modify it to display a custom message with the productId.  
+A5.
+`javascript
+// pages/products/[productId].js
+import { useRouter } from 'next/router';
+
+export default function Product() {
+  const { productId } = useRouter().query;
+  return <h1>Flipkart Product Details - Product ID: {productId}</h1>;
+}
+`

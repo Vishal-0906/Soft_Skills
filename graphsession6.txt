@@ -1,5 +1,3 @@
----
-
 Session 6 – Introduction to Next.js
 
 Q1. Install Node.js if not already installed, then use npx create-next-app to create a new Next.js project called insta-feed and run it locally to see the default homepage.  

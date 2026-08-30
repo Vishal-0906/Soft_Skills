@@ -1,0 +1,63 @@
+Session 4 – Mutations (Add, Update, Delete)
+
+Q1. Write a GraphQL mutation called addSong that takes title and artist as input and adds a new song to your playlist app. Use the useMutation hook from Apollo Client to call this mutation when a user submits a form.  
+A1.
+`graphql
+mutation addSong($title: String!, $artist: String!) {
+  addSong(title: $title, artist: $artist) {
+    id
+    title
+    artist
+  }
+}
+`
+
+Q2. Implement an updateSong mutation and use the useMutation hook to allow users to edit the title of an existing song in your playlist app. After updating, ensure the UI shows the new title immediately.  
+A2.
+`graphql
+mutation updateSong($id: ID!, $title: String!) {
+  updateSong(id: $id, title: $title) {
+    id
+    title
+    artist
+  }
+}
+`
+
+Q3. Add a deleteSong mutation and connect it with a Delete button in your playlist app. When the button is clicked, remove the song from both the backend and the UI.  
+A3.
+`graphql
+mutation deleteSong($id: ID!) {
+  deleteSong(id: $id) {
+    id
+  }
+}
+`
+
+Q4. Enable optimistic UI updates for the addSong mutation so that when a user adds a new song, it appears instantly in the playlist before the server responds. Hint: Use the optimisticResponse option in the useMutation hook to update the UI immediately.  
+A4.
+`javascript
+const [addSong] = useMutation(ADD_SONG, {
+  optimisticResponse: {
+    addSong: {
+      id: Date.now().toString(),
+      title: newTitle,
+      artist: newArtist,
+      typename: "Song"
+    }
+  }
+});
+`
+
+Q5. Show how a mutation modifies the backend and automatically re-renders the component by displaying the total number of songs in your playlist app. Update this count instantly whenever a song is added or deleted.  
+A5.
+`graphql
+query getSongs {
+  songs {
+    id
+    title
+    artist
+  }
+  songCount
+}
+`
